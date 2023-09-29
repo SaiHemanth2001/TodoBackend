@@ -22,7 +22,8 @@ public class AuthenticationService {
 	private final JwtService jwtService;
 	private final AuthenticationManager authenticationManager;
 	
-	public AuthenticationResponse register (RegisterRequest request) {
+	public AuthenticationResponse register (RegisterRequest request) throws Exception {
+		if(request.getEmail().substring(request.getEmail().indexOf('@'), request.getEmail().length()).equals("@gmail.com")) {
 		var user = User.builder()
 				.email(request.getEmail())
 				.password(passwordEncoder.encode(request.getPassword()))
@@ -36,6 +37,10 @@ public class AuthenticationService {
 		return AuthenticationResponse.builder()
 				.token(jwtToken)
 				.build();
+		}
+		else {
+			throw new Exception("Manager not found");
+		}
 				
 	}
 	
